@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Runtime.InteropServices;
 
-namespace ispysvc
+namespace ISpyService
 {
     class Program
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{0EA83608-6FB2-475E-9101-640B3767E799}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ispysvc</RootNamespace>
-    <AssemblyName>ispysvc</AssemblyName>
+    <RootNamespace>ISpyService</RootNamespace>
+    <AssemblyName>ispyservice</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
