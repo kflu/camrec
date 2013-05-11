@@ -1,15 +1,7 @@
-This project implement a Windows service that, upon starting and stopping the service, can start and stop the iSpy application. It has the following features:
-
-- Service start/stop will trigger application start/stop
-- On stopping the service, it sends "shutdown" command to iSpy so it's shut down gracefully, e.g., recordings are written properly to the files so they are not corrupted.
-
-
-Currently it's in alpha phase with the following limitation:
-
-- It doesn't restart iSpy if it crashed or terminated outside of the service
-- It starts iSpy only from the default installation path (c:\program files(x86)\ispy\ispy\ispy.exe)
-
+This project implements a windows service that invokes a gstreamer pipeline to
+record ip cam output (MJPEG), encodes it and dumps into a directory. It kills
+the pipeline every N minutes to create a new file. 
 
 USAGE:
 =======
-You need to install the service manually. install_svc.bat can do that, but you'll need to change the service's LOG ON account to use yours.
+run install.bat
