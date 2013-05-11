@@ -37,6 +37,8 @@ namespace KFL.CamRecorder
         private readonly string user;
         private readonly string pass;
 
+        private const string configFile = @"C:\camrec\config.txt";
+
         public CamRecorderService()
         {
             gcl = new object();
@@ -47,7 +49,13 @@ namespace KFL.CamRecorder
                 EventLog.CreateEventSource(CamRecorderService.EventSource, string.Empty);
             }
 
-            using (FileStream fs = new FileStream(@"C:\camrec\config.txt", FileMode.Open, FileAccess.Read))
+            if (!File.Exists(CamRecorderService.configFile))
+            {
+                EventLog.WriteEntry(CamRecorderService.EventSource, CamRecorderService.configFile + " doesn't exist", EventLogEntryType.Error);
+                throw new ArgumentException("config file doesn't exist");
+            }
+
+            using (FileStream fs = new FileStream(CamRecorderService.configFile, FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(fs))
                 {
