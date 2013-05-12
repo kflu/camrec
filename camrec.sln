@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ipcamrec", "ipcamrec.csproj", "{5EF63ECB-E00C-437F-AAAA-2AC0103BC42B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "camrec", "camrec.csproj", "{5EF63ECB-E00C-437F-AAAA-2AC0103BC42B}"
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "Modeling", "Modeling\Modeling.modelproj", "{6A9235CA-A1FF-4965-9437-022E9B4D401C}"
 EndProject

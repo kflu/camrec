@@ -105,7 +105,7 @@ namespace KFL.CamRecorder
                         this.proc.StartInfo.FileName = this.exePath;
                         start = DateTime.UtcNow;
                         this.proc.StartInfo.Arguments = string.Format(
-                            " -e souphttpsrc location={0} user-id={1} user-pw={2} do-timestamp=true is_live=true timeout=5 !  multipartdemux !  jpegparse !  jpegdec !  clockoverlay time-format=\"%c\" !  theoraenc !  oggmux !  filesink location=\"/cygdrive/c/camrec/{3}.ogg\"",
+                            " -e souphttpsrc location={0} user-id={1} user-pw={2} do-timestamp=true is_live=true timeout=5 !  multipartdemux ! \"image/jpeg,framerate=(fraction)5/1\" ! jpegparse !  jpegdec !  clockoverlay time-format=\"%c\" !  theoraenc !  oggmux !  filesink location=\"/cygdrive/c/camrec/{3}.ogg\"",
                             this.url,
                             this.user,
                             this.pass,

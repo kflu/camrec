@@ -7,8 +7,8 @@
     <ProjectGuid>{5EF63ECB-E00C-437F-AAAA-2AC0103BC42B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ipcamrec</RootNamespace>
-    <AssemblyName>ipcamrec</AssemblyName>
+    <RootNamespace>camrec</RootNamespace>
+    <AssemblyName>camrec</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
