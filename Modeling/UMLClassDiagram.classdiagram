@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="6fbc1283-26a4-4867-bdc5-3f72413ecf4f" name="UMLClassDiagram" linkedPackageId="973441a5-4cf0-4969-8402-a42cb52d37ae" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="c2e10adf-9821-4a4c-8877-dadb780b2697">
+      <profileInstance Id="2f6cb2fb-412d-49bd-bf2c-29dc19b48cb6" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="ad20fc9b-db77-4c02-a437-99f0ed94daea">
+      <profileInstance Id="efa67a5b-df56-44ab-9db0-edc0c2762ff9" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="8de6df4f-5998-41e7-b78a-f1c382bbebd9" name="Scheduler" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="efff7a90-d843-4f84-a2ba-1567a834bdf5" />
+        <targetEnds>
+          <association Id="a9550fe8-0fa7-40f2-abcc-8c85e362f0b6" isDerived="false" sourceEndRoleName="Scheduler" targetEndRoleName="SchedulingInfo" isLeaf="false" isAbstract="false">
+            <classMoniker Id="32e367c9-6f3e-4133-b481-5fa117760cc7" LastKnownName="SchedulingInfo" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="0276d3dc-ac1d-4931-b065-67d1fcfa3f6b" name="Scheduler" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="114417ed-0b24-45b8-a623-22f9f09b0c90" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="c93d4db8-84a8-4a47-a565-ac9ea1b7593b" name="SchedulingInfo" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
+                  <lowerValueInternal>
+                    <literalString Id="17624067-7382-44dc-82d7-20a615b4d22e" name="Lower" value="1">
+                      <elementDefinition Id="4caf5505-681b-4957-8725-f56626b47e2b" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="615482d6-adb2-43f4-a890-2281a550ee39" name="Upper" value="N">
+                      <elementDefinition Id="1100d483-f8a4-4530-b924-b978876fa669" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="7f2cecaf-c340-4637-a44f-a178e1314665" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="45075719-d431-476c-b4fd-28a78b631025" />
+          </association>
+        </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="32e367c9-6f3e-4133-b481-5fa117760cc7" name="SchedulingInfo" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="fc662933-a7be-409f-a69b-3f1ac375f1ac" />
+        <targetEnds>
+          <association Id="426fdf85-84f4-421c-bdae-f3d52ac95fbc" isDerived="false" sourceEndRoleName="SchedulingInfo" targetEndRoleName="CamRecorder" isLeaf="false" isAbstract="false">
+            <classMoniker Id="7bb0d687-994d-43ec-a830-9eff0e9de99c" LastKnownName="CamRecorder" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="ff89183a-7b72-486b-9249-5c1ec10645ff" name="SchedulingInfo" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="44c7a585-df3e-4e8c-91da-952f283553aa" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="6ad2e405-3b5f-4904-b8f4-5401765a6374" name="CamRecorder" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="8b3a29aa-36a6-4c48-a51d-858bbd7c827a" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="cdcf1cf2-9504-4fc7-bbfe-55f2aef7b93d" />
+          </association>
+          <association Id="9fbe904a-9012-4cc6-ab7d-dbf211580e80" isDerived="false" sourceEndRoleName="SchedulingInfo" targetEndRoleName="ISchedulingPattern" isLeaf="false" isAbstract="false">
+            <interfaceMoniker Id="c49f4a50-a410-478b-9c97-fd279547ac3c" LastKnownName="ISchedulingPattern" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="8d33fc23-2f4b-4082-9d8a-1088c6da4d38" name="SchedulingInfo" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="a454b049-954c-468c-898d-9c3557a9e973" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9dcc4903-cbf0-4a0f-8f98-0a5e16ebf8b7" name="ISchedulingPattern" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="489b8525-9ace-48c5-aee0-2dcc7e420034" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="37801a56-3016-4547-8c12-fc22a13e9a5f" />
+          </association>
+        </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <Interface Id="c49f4a50-a410-478b-9c97-fd279547ac3c" name="ISchedulingPattern" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="a85cd203-9072-4c7c-8e44-77d17a0d10ac" />
+        <ownedAttributes>
+          <property Id="7e5abd56-5cb5-49f2-a685-70545d32080c" name="IsEnabled" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="3ea082a4-6923-47e3-a7c6-63645cb7bf9b" />
+          </property>
+        </ownedAttributes>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="aeb8dc14-3384-4bbd-9c74-6c7d0c84b1f5" name="TimeSchedulingPattern" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="ec3dae23-9ffa-4843-a9df-906732d0a8d2" />
+        <suppliersInternal>
+          <interfaceRealization Id="d3210a37-173c-4c64-b18b-abe6c6edf04f">
+            <interfaceMoniker Id="c49f4a50-a410-478b-9c97-fd279547ac3c" LastKnownName="ISchedulingPattern" />
+            <elementDefinition Id="22110b31-ef34-435e-96a9-f2f7a1dfc31a" />
+          </interfaceRealization>
+        </suppliersInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="7bb0d687-994d-43ec-a830-9eff0e9de99c" name="CamRecorder" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="9cbf34d5-ad64-4f5f-a8d8-f929044b6fd6" />
+        <ownedAttributesInternal>
+          <property Id="03a9a506-c969-4057-933d-d092bfe4657b" name="IsStopped" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="264dce30-00ba-4461-b2d3-096d197a5d28" />
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="5ba77a89-d2f3-433c-a79f-101a59d7620f" name="Start" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="9375ce18-b5a6-4ebb-8318-0356ece19403" />
+          </operation>
+          <operation Id="65e82df1-fe93-417f-9ca3-2c8b1750bce2" name="Stop" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="c872e3c4-5216-42ec-ad21-3b7c3e4c6d87" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="973441a5-4cf0-4969-8402-a42cb52d37ae" name="Modeling">
+    <elementDefinition Id="f3674ca5-0f74-44a1-97b4-978755e49988" />
+  </package>
+</logicalClassDesignerModel>
