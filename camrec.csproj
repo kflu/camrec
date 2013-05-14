@@ -42,10 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CameraInfo.cs" />
+    <Compile Include="CameraRecorder.cs" />
     <Compile Include="Program.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule.cs" />
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="install.bat" />
+    <None Include="README" />
+    <None Include="uninstall.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config.sample.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

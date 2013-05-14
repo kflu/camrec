@@ -1,141 +1,117 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ServiceProcess;
 using System.Diagnostics;
-using System.Threading;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Linq;
+using System.ServiceProcess;
+using System.Xml.Linq;
 
-namespace KFL.CamRecorder
+namespace camrec
 {
     class Program
     {
         static void Main(string[] args)
         {
-            ServiceBase.Run(new CamRecorderService());
+            if (Environment.UserInteractive)
+            {
+                Console.WriteLine("press anykey to continue.");
+                Console.ReadLine();
+                (new CamRecorderService()).StartFromConsole();
+                Console.WriteLine("Press ctrl-c to stop");
+                while (true)
+                {
+                }
+            }
+            else
+            {
+                ServiceBase.Run(new CamRecorderService());
+            }
         }
     }
 
     class CamRecorderService : ServiceBase
     {
-        private const string EventSource = "KflCamRec";
-
-        private readonly string exePath = @"C:\Cygwin\bin\gst-launch-1.0.exe";
-
-        private Process proc;
-
-        private readonly object gcl;
-
-        private Thread procMon;
-
-        private int serviceStopRequested = 0;
-
-        private readonly string url;
-        private readonly string user;
-        private readonly string pass;
-
-        private const string configFile = @"C:\camrec\config.txt";
+        private const string configFilePath = @"C:\camrec\config.xml";
+        private readonly XContainer config;
+        private readonly CameraRecorder[] cameraRecorders;
+        private const string ConfigRootXName = "config";
 
         public CamRecorderService()
         {
-            gcl = new object();
-
-            // Create event log source
-            if (!EventLog.SourceExists(CamRecorderService.EventSource))
+            if (!File.Exists(CamRecorderService.configFilePath))
             {
-                EventLog.CreateEventSource(CamRecorderService.EventSource, string.Empty);
-            }
-
-            if (!File.Exists(CamRecorderService.configFile))
-            {
-                EventLog.WriteEntry(CamRecorderService.EventSource, CamRecorderService.configFile + " doesn't exist", EventLogEntryType.Error);
+                EventLog.WriteEntry(CamRecorderService.configFilePath + " doesn't exist", EventLogEntryType.Error);
                 throw new ArgumentException("config file doesn't exist");
             }
 
-            using (FileStream fs = new FileStream(CamRecorderService.configFile, FileMode.Open, FileAccess.Read))
-            {
-                using (StreamReader reader = new StreamReader(fs))
-                {
-                    this.url = reader.ReadLine();
-                    this.user = reader.ReadLine();
-                    this.pass = reader.ReadLine();
+            this.config = XDocument.Load(CamRecorderService.configFilePath).Element(CamRecorderService.ConfigRootXName);
+            Util.ThrowIfNull(this.config, "Config object");
 
-                    if (this.url == null || this.user == null || this.pass == null)
-                    {
-                        EventLog.WriteEntry(CamRecorderService.EventSource, "url or user or pass is null", EventLogEntryType.Error);
-                        throw new ArgumentException("can't read config file");
-                    }
-                }
-            }
+            CameraRecorder[] cameraRecorders = (from recorder in this.config.Elements(CameraRecorder.XName)
+                                                select CameraRecorder.FromXml(recorder)).ToArray();
+
+            this.cameraRecorders = cameraRecorders;
+        }
+
+        public void StartFromConsole()
+        {
+            this.OnStart(Environment.GetCommandLineArgs());
         }
 
         protected override void OnStart(string[] args)
         {
-            this.procMon = new Thread(() =>
+            try
             {
-                EventLog.WriteEntry(CamRecorderService.EventSource, "entering main loop");
-                DateTime start = DateTime.UtcNow;
-                while (true)
+                foreach (CameraRecorder recorder in this.cameraRecorders)
                 {
-                    if (this.serviceStopRequested != 0)
-                    {
-                        Interlocked.Decrement(ref this.serviceStopRequested);
-                        EventLog.WriteEntry(CamRecorderService.EventSource, "stop requested");
-                        this.proc.Kill();
-                        break;
-                    }
-
-                    DateTime now = DateTime.UtcNow;
-                    if (now - start > TimeSpan.FromMinutes(15))
-                    {
-                        EventLog.WriteEntry(CamRecorderService.EventSource, "Timer expires, killing");
-                        if (!this.proc.HasExited)
-                        {
-                            this.proc.Kill();
-                        }
-                    }
-
-                    if (this.proc == null || this.proc.HasExited)
-                    {
-                        EventLog.WriteEntry(CamRecorderService.EventSource, "proc terminated. start new.");
-                        this.proc = new Process();
-                        this.proc.StartInfo.FileName = this.exePath;
-                        start = DateTime.UtcNow;
-                        this.proc.StartInfo.Arguments = string.Format(
-                            " -e souphttpsrc location={0} user-id={1} user-pw={2} do-timestamp=true is_live=true timeout=5 !  multipartdemux ! \"image/jpeg,framerate=(fraction)5/1\" ! jpegparse !  jpegdec !  clockoverlay time-format=\"%c\" !  theoraenc !  oggmux !  filesink location=\"/cygdrive/c/camrec/{3}.ogg\"",
-                            this.url,
-                            this.user,
-                            this.pass,
-                            string.Format("camrec_{0}.ogg", start.ToString("yyyyMMdd_HHmmss")));
-                        this.proc.Start();
-                    }
-
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    Util.Log("Starting recorder for camera: " + recorder.cameraInfo.name);
+                    recorder.Start();
                 }
-            });
-
-            EventLog.WriteEntry(CamRecorderService.EventSource, "starting proc mon thread");
-            this.procMon.Start();
+            }
+            catch (Exception e)
+            {
+                Util.Log("Exception encountered. Stopping: " + e.ToString());
+                base.Stop();
+            }
         }
 
         protected override void OnStop()
         {
-            EventLog.WriteEntry(CamRecorderService.EventSource, "service stop requested, requesting stop");
+            Util.Log("service stop requested, requesting stop");
 
-            Interlocked.Increment(ref this.serviceStopRequested);
-
-            EventLog.WriteEntry(CamRecorderService.EventSource, "Waiting for procMon to join");
-            if (!this.procMon.Join(TimeSpan.FromMinutes(2)))
+            foreach (CameraRecorder recorder in this.cameraRecorders)
             {
-                EventLog.WriteEntry(CamRecorderService.EventSource, "Timeout. Killing process, Killing procMon");
-                this.procMon.Abort();
-                this.proc.Kill(); // FIXME: not thread safe
+                Util.Log("Requesting to stop camera: " + recorder.cameraInfo.name);
+                recorder.RequestStop();
             }
 
-            EventLog.WriteEntry(CamRecorderService.EventSource, "procMon returned/killed. Now exiting.");
+            DateTime start = DateTime.UtcNow;
+            bool allStopped = false;
+            while (DateTime.UtcNow - start < TimeSpan.FromSeconds(10))
+            {
+                if (allStopped = !(this.cameraRecorders.Count(recorder => !recorder.IsStopped()) > 0))
+                {
+                    break;
+                }
+            }
+
+            if (!allStopped)
+            {
+                // This is impossible
+                Util.Log(
+                    "There are cameras that can't be stopped. Count: " + this.cameraRecorders.Count(recorder => !recorder.IsStopped()),
+                    EventLogEntryType.Error);
+            }
+
+            foreach (CameraRecorder recorder in this.cameraRecorders)
+            {
+                if (!recorder.pipelineThread.Join(TimeSpan.FromSeconds(2)))
+                {
+                    EventLog.WriteEntry("Timeout. Aborting thread for camera: " + recorder.cameraInfo.name, EventLogEntryType.Warning);
+                    recorder.pipelineThread.Abort();
+                }
+            }
+
+            Util.Log("Service is now exiting");
         }
     }
 }
