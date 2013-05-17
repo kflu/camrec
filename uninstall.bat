@@ -1,2 +1,6 @@
+@echo stopping service camrec...
+net stop camrec
 sc delete camrec
-echo you need to manually review and delete c:\camrec directory
+del %windir%\camrec.exe
+
+@echo !! You may want to manually delete %windir%\camrec.xml !!

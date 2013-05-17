@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="CameraInfo.cs" />
     <Compile Include="CameraRecorder.cs" />
+    <Compile Include="CameraRecorderFactory.cs" />
+    <Compile Include="CygGstCameraRecorder.cs" />
+    <Compile Include="ICameraRecorder.cs" />
     <Compile Include="Program.cs">
       <SubType>Component</SubType>
     </Compile>

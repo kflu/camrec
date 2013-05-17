@@ -30,9 +30,9 @@ namespace camrec
 
     class CamRecorderService : ServiceBase
     {
-        private const string configFilePath = @"C:\camrec\config.xml";
-        private readonly XContainer config;
-        private readonly CameraRecorder[] cameraRecorders;
+        private static readonly string configFilePath = Path.Combine(Util.GetExeDirectory(), "camrec.xml");
+        private readonly XElement config;
+        private readonly ICameraRecorder[] cameraRecorders;
         private const string ConfigRootXName = "config";
 
         public CamRecorderService()
@@ -45,10 +45,8 @@ namespace camrec
 
             this.config = XDocument.Load(CamRecorderService.configFilePath).Element(CamRecorderService.ConfigRootXName);
             Util.ThrowIfNull(this.config, "Config object");
-
-            CameraRecorder[] cameraRecorders = (from recorder in this.config.Elements(CameraRecorder.XName)
-                                                select CameraRecorder.FromXml(recorder)).ToArray();
-
+            ICameraRecorder[] cameraRecorders = CameraRecorderFactory.Instance.Value.CreateCameraRecorders(this.config.Element(CameraRecorderFactory.CameraRecordersXName));
+            Util.ThrowIfNull(cameraRecorders, "cameraRecorders");
             this.cameraRecorders = cameraRecorders;
         }
 
@@ -86,6 +84,9 @@ namespace camrec
 
             DateTime start = DateTime.UtcNow;
             bool allStopped = false;
+
+            // Waiting for all recorders to stop
+            Util.Log("Waiting for all recorders to stop");
             while (DateTime.UtcNow - start < TimeSpan.FromSeconds(10))
             {
                 if (allStopped = !(this.cameraRecorders.Count(recorder => !recorder.IsStopped()) > 0))
@@ -98,17 +99,8 @@ namespace camrec
             {
                 // This is impossible
                 Util.Log(
-                    "There are cameras that can't be stopped. Count: " + this.cameraRecorders.Count(recorder => !recorder.IsStopped()),
+                    "There are recorders that can't be stopped. Count: " + this.cameraRecorders.Count(recorder => !recorder.IsStopped()),
                     EventLogEntryType.Error);
-            }
-
-            foreach (CameraRecorder recorder in this.cameraRecorders)
-            {
-                if (!recorder.pipelineThread.Join(TimeSpan.FromSeconds(2)))
-                {
-                    EventLog.WriteEntry("Timeout. Aborting thread for camera: " + recorder.cameraInfo.name, EventLogEntryType.Warning);
-                    recorder.pipelineThread.Abort();
-                }
             }
 
             Util.Log("Service is now exiting");

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <CameraRecorders>
+    <!-- CygGstCameraRecorder is a recorder that make use of Cygwin Gstreamer.
+            * gst-path is a WINDOWS path name to the gst-launch.exe.
+            * log-folder is a UNIX path name to the log folder where you want to store the recordings. Ensure the folder exists.
+    -->
+    <CygGstCameraRecorder gst-path="C:\Cygwin\bin\gst-launch-1.0.exe" log-folder="/cygdrive/c/LogFolder">
+      <Camera id="drive way" url="http://192.168.0.201:81/video.cgi" username="(optional)your_username" password="(optional)your_password" />
+      <!--
+        There are two ways to specify start/end. 
+        If start <= end. Then it's enabled during the same day:
+          .....Start__________End.....
+        If start >= end. Then it's cross day:
+          _____End..........Start_____
+        where "." means disabled, "_" means enabled
+        -->
+      <Schedule startlocal="5:00AM" endlocal="10:00PM" />
+      <!--An empty Schedule means enabled for all day long:
+      <Schedule />
+      -->
+    </CygGstCameraRecorder>
+    <!--You could specify more CameraRecorder here...-->
+  </CameraRecorders>
+</config>

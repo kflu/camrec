@@ -58,5 +58,11 @@ namespace camrec
             }
             return obj.Value;
         }
+
+        public static string GetExeDirectory()
+        {
+            Process proc = Process.GetCurrentProcess();
+            return Path.GetDirectoryName(proc.MainModule.FileName);           
+        }
     }
 }
