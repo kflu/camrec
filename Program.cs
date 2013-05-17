@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Xml.Linq;
+using System.Threading;
 
 namespace camrec
 {
@@ -19,6 +20,7 @@ namespace camrec
                 Console.WriteLine("Press ctrl-c to stop");
                 while (true)
                 {
+                    Thread.Sleep(1);
                 }
             }
             else

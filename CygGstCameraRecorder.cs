@@ -84,11 +84,13 @@ namespace camrec
                             // This is to prevent video file cutting to be run when pipeline has been disabled 
                             // for a long time and just gets enabled. (FIXME) But this approach won't work when the main 
                             // loop sleep time is longer then the max video file duration.
+                            // TODO: this can be simply fixed by introducing a state bool prevDisabled = true; before the while
+                            // loop. file cutting only runs if prevDisabled == true. prevDisabled will be set to false in enabled
+                            // branch; and set to true in disabled branch.
                             start = DateTime.UtcNow;
-                            continue;
                         }
 
-                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                        Thread.Sleep(1);
                     }
                 });
 
